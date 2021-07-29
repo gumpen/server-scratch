@@ -1,16 +1,17 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/julienschmidt/httprouter"
+
+	"github.com/gumpen/server-scratch/handler"
 )
 
 func main() {
-	http.HandleFunc("/", hello)
-	log.Fatal(http.ListenAndServe(":8080", nil))
-}
+	router := httprouter.New()
+	router.GET("/users", handler.UserIndex)
 
-func hello(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "hello, world")
+	log.Fatal(http.ListenAndServe("127.0.0.1:8080", router))
 }
